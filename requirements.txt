@@ -1,0 +1,11 @@
+fastapi==0.70.0
+uvicorn==0.15.0
+sqlalchemy==1.4.27
+psycopg2-binary==2.9.2
+pydantic==1.8.2
+transitions==0.8.8
+pytest
+requests
+
+
+

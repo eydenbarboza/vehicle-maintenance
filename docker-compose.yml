@@ -1,0 +1,39 @@
+
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: transport_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://user:password@db/transport_db
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  
+  tests:
+    build: .
+    command: ["pytest", "/app/tests"]
+    volumes:
+      - .:/app
+      - ./tests:/app/tests
+    depends_on:
+      - db
+    environment:
+      TESTING: 'True'
+
+volumes:
+  postgres_data:
+
